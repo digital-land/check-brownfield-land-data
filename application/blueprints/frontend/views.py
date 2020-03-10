@@ -15,8 +15,8 @@ def index():
     return render_template('index.html')
 
 
-@frontend.route('/upload', methods=['GET', 'POST'])
-def upload():
+@frontend.route('/check', methods=['GET', 'POST'])
+def check():
     form = UploadForm()
     if form.validate_on_submit():
         try:

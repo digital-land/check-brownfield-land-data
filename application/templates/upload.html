@@ -46,7 +46,7 @@
 
 		<span class="govuk-caption-xl">Check your brownfield land data</span>
 		<h1 class="govuk-heading-xl">Upload your brownfield land register</h1>
-		<form class="govuk-form" method="POST" action="{{ url_for('frontend.upload') }}"  enctype="multipart/form-data">
+		<form class="govuk-form" method="POST" action="{{ url_for('frontend.check') }}"  enctype="multipart/form-data">
 			<div class="govuk-form-group{% if form.errors %} govuk-form-group--error{% endif %}">
 				<label class="govuk-label" for="file-upload-1">
 				Select your CSV file
