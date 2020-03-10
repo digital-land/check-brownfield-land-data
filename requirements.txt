@@ -1,5 +1,6 @@
 -e git+https://github.com/digital-land/brownfield-resources.git@57cfb50fc52efdf31000770e232d1c60cfb842a6#egg=Brownfield_resource_generator
 click==7.1.1
+decorator==4.4.2
 Flask==1.1.1
 Flask-WTF==0.14.3
 -e git+https://github.com/colmjude/govuk-jinja-components.git@854b3b479e7eda2994476844120438767d23ec3a#egg=govuk_jinja_components
@@ -12,5 +13,6 @@ python-dateutil==2.8.1
 python-dotenv==0.12.0
 pytz==2019.3
 six==1.14.0
+validators==0.14.2
 Werkzeug==1.0.0
 WTForms==2.2.1
