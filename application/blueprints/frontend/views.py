@@ -6,6 +6,8 @@ from flask import (
     request,
     json)
 
+from application.blueprints.frontend.forms import UploadForm
+
 frontend = Blueprint('frontend', __name__, template_folder='templates')
 
 @frontend.route('/')
@@ -13,6 +15,14 @@ def index():
     return render_template('index.html')
 
 
-@frontend.route('/upload')
+@frontend.route('/upload', methods=['GET', 'POST'])
 def upload():
-    return render_template('upload.html')
+    form = UploadForm()
+    if form.validate_on_submit():
+        try:
+            # TODO: check file and process
+            # TODO: run through the pipeline
+            return render_template('upload.html', form=form)
+        except FileTypeException as e:
+            flash(f'{e}', category='error')
+    return render_template('upload.html', form=form)
