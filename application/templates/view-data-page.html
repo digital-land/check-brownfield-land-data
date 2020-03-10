@@ -1,0 +1,433 @@
+{% extends "leaflet-base.html" %}
+
+{% from "dl-partials/check-data-macros.html" import makeLinkAnAnchor -%}
+{% from "dl-partials/check-data-macros.html" import renderCellWithIssue -%}
+
+{% block beforeContent %}
+ {{ super() }}
+ <a href="/check" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-xl">Brownfield land</span>
+        <h1 class="govuk-heading-xl">View the data</h1>
+        <p class="govuk-body-l">Explore the brownfield land data from the upload file. The data has been extracted and processed by the Digital Land pipeline.</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">How we've processed this data</h2>
+        <p class="govuk-body">The <a href="https://digital-land.github.io/guidance/pipeline/">Digital Land pipeline</a> collects the data and fixes common errors that do not align with the <a href="https://www.gov.uk/government/publications/brownfield-land-registers-data-standard/publish-your-brownfield-land-data">data standard</a>.</p>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">Facts from the data</h2>
+        <p class="govuk-body">The following information has been extracted from the register.</p>
+        <p class="govuk-body">The register references <span class="govuk-!-font-weight-bold">{{ summary.unique_organisation_uris }}</span> {{"organisation"|pluralise("", "s", summary.unique_organisation_uris)}}.</p>
+        <p class="govuk-body">It reports <span class="govuk-!-font-weight-bold">{{ summary.total }} brownfield sites</span>. <span class="govuk-!-font-weight-bold">{{ summary.end_dates }}</span> of these have an <a href="https://digital-land.github.io/guidance/data-principles/#end-dates">end date</a> and are no longer considered brownfield land.</p>
+        <p class="govuk-body">Not including sites with an end date, there are:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                <span class="govuk-!-font-weight-bold">{{'%0.2f' % summary.hectares_active|float}}
+                hectares</span> of brownfield land
+            </li>
+            {%- set min_dwell = summary.min_dwellings_active|int -%}
+            {%- set max_dwell = summary.max_dwellings_active|int -%}
+            <li>{%- if not min_dwell == max_dwell -%}
+                between <span class="govuk-!-font-weight-bold">{{ summary.min_dwellings_active|int }}</span> and {% endif -%}
+                <span class="govuk-!-font-weight-bold">{{ summary.max_dwellings_active|int }}</span> potential dwellings that could be built
+            </li>
+            <li><span class="govuk-!-font-weight-bold">{{ summary["permission_in_principle_active"] }}
+                </span> {{"site"|pluralise("","s",summary["permission_in_principle_active"])}} have <a href="https://www.gov.uk/guidance/permission-in-principle">permission in principle</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<h3 class="govuk-heading-m govuk-!-margin-top-6">Site locations</h3>
+<p class="govuk-body">Click on each plotted site to see further information.</p>
+
+<div id="map" style="width: 100%; height: 640px;"></div>
+<div class="map__site-count{{ '' if summary.hasLatLng == data|length else ' map__site-count--warning' }} govuk-!-margin-bottom-9">{% if summary.hasLatLng == data|length %}
+    All {{ summary.hasLatLng }} {{ "site"|pluralise("", "s", data|length)}} plotted.
+    {%- else -%}
+    {{ summary.hasLatLng }} of {{ data|length }} sites plotted. This could be because there are missing coordinates in the data.
+    {% endif %}</div>
+
+<h3 class="govuk-heading-m">Records</h3>
+
+<p class="govuk-body">There are <strong>{{ data|length }}</strong> records after processing this brownfield register.
+</p>
+
+<p class="govuk-body">Explore the processed data in the table below.</p>
+
+<div class="data-table__wrapper" data-module="data-table data-linkable-table">
+    <div class="data-table-left-shadow"></div>
+    <div class="wide-table">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th scope="col" aria-sort="none">SiteReference</th>
+                    <th scope="col" aria-sort="none">SiteNameAddress</th>
+                    <th scope="col">GeoX</th>
+                    <th scope="col">GeoY</th>
+                    <th scope="col" aria-sort="none">Hectares</th>
+                    <th scope="col" aria-sort="none">NetDwellingsRangeFrom</th>
+                    <th scope="col" aria-sort="none">NetDwellingsRangeTo</th>
+                    <th scope="col">FirstAddedDate</th>
+                    <th scope="col">LastUpdatedDate</th>
+                    <th scope="col">Deliverable</th>
+                    <th scope="col">HazardousSubstances</th>
+                    <th scope="col">OrganisationURI</th>
+                    <th scope="col">OwnershipStatus</th>
+                    <th scope="col">PermissionDate</th>
+                    <th scope="col">PermissionType</th>
+                    <th scope="col">PlanningHistory</th>
+                    <th scope="col">PlanningStatus</th>
+                    <th scope="col">SiteplanURL</th>
+                    <th scope="col">Notes</th>
+                    <th scope="col">EndDate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%- for row in data -%}
+                {% set row_num = loop.index %}
+                <tr{%- if row_num > (data|length - 2) %} class="data-table__row--bottom"{%- endif -%}>
+
+                    {# SiteReference #}
+                    {% if issues[row_num] and issues[row_num]['SiteReference'] %}
+                        {{ renderCellWithIssue({
+                            "value": row["SiteReference"],
+                            "original": issues[row_num]['SiteReference']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['SiteReference']['tag'],
+                            "message": issues[row_num]['SiteReference']['message'],
+                            "sortValue": ""
+                        }) }}
+                    {% else %}
+                    <td data-sort-value="{{ '' if row['SiteReference'] == None else row['SiteReference'] }}">{{ "" if row["SiteReference"] == None else row["SiteReference"] }}</td>
+                    {% endif %}
+
+                    <td data-sort-value="{{ '' if row['SiteNameAddress'] == None else row['SiteNameAddress'] }}" class="data-table__cell--max-width">{{ "" if row["SiteNameAddress"] == None else row["SiteNameAddress"] }}</td>
+
+                    {# GeoX #}
+                    {% if issues[row_num] and issues[row_num]['GeoX'] %}
+                        {{ renderCellWithIssue({
+                            "value": row["GeoX"],
+                            "original": issues[row_num]['GeoX']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['GeoX']['tag'],
+                            "message": issues[row_num]['GeoX']['message'],
+                            "sortValue": ""
+                        }) }}
+                    {% else %}
+                    <td>{{ "" if row["GeoX"] == None else row["GeoX"] }}</td>
+                    {% endif %}
+
+                    {# GeoY #}
+                    {% if issues[row_num] and issues[row_num]['GeoY'] %}
+                        {{ renderCellWithIssue({
+                            "value": row["GeoY"],
+                            "original": issues[row_num]['GeoY']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['GeoY']['tag'],
+                            "message": issues[row_num]['GeoY']['message'],
+                            "sortValue": ""
+                        }) }}
+                    {% else %}
+                    <td>{{ "" if row["GeoY"] == None else row["GeoY"] }}</td>
+                    {% endif %}
+
+                    {# Hectares #}
+                    {% if issues[row_num] and issues[row_num]['Hectares'] %}
+                        {{ renderCellWithIssue({
+                            "value": row["Hectares"],
+                            "original": issues[row_num]['Hectares']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['Hectares']['tag'],
+                            "message": issues[row_num]['Hectares']['message'],
+                            "sortValue": 0
+                        }) }}
+                    {% else %}
+                    <td data-sort-value="{{ '' if row['Hectares'] == None else row['Hectares'] }}">{{ "" if row["Hectares"] == None else row["Hectares"] }}</td>
+                    {% endif %}
+
+                    {# NetDwellingsRangeFrom #}
+                    {% if issues[row_num] and issues[row_num]['NetDwellingsRangeFrom'] %}
+                        {% if issues[row_num]['NetDwellingsRangeFrom']['tag'] == "amended" %}
+                        {{ renderCellWithIssue({
+                            "value": row["NetDwellingsRangeFrom"],
+                            "original": "",
+                            "processed": issues[row_num]['NetDwellingsRangeFrom']['original'],
+                            "tag": issues[row_num]['NetDwellingsRangeFrom']['tag'],
+                            "message": issues[row_num]['NetDwellingsRangeFrom']['message'],
+                            "sortValue": row["NetDwellingsRangeFrom"],
+                            "classes": "data-table__issue--wide"
+                        }) }}
+                        {% else %}
+                        {{ renderCellWithIssue({
+                            "value": row["NetDwellingsRangeFrom"],
+                            "original": issues[row_num]['NetDwellingsRangeFrom']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['NetDwellingsRangeFrom']['tag'],
+                            "message": issues[row_num]['NetDwellingsRangeFrom']['message'],
+                            "sortValue": 0,
+                            "classes": "data-table__issue--wide"
+                        }) }}
+                        {% endif %}
+                    {% else %}
+                    <td data-sort-value="{{ '' if row['NetDwellingsRangeFrom'] == None else row['NetDwellingsRangeFrom'] }}">{{ "" if row["NetDwellingsRangeFrom"] == None else row["NetDwellingsRangeFrom"] }}</td>
+                    {% endif %}
+
+                    {# NetDwellingsRangeTo #}
+                    {% if issues[row_num] and issues[row_num]['NetDwellingsRangeTo'] %}
+                        {% if issues[row_num]['NetDwellingsRangeTo']['tag'] == "amended" %}
+                            {{ renderCellWithIssue({
+                                "value": row["NetDwellingsRangeTo"],
+                                "original": "",
+                                "processed": issues[row_num]['NetDwellingsRangeTo']['original'],
+                                "tag": issues[row_num]['NetDwellingsRangeTo']['tag'],
+                                "message": issues[row_num]['NetDwellingsRangeTo']['message'],
+                                "sortValue": issues[row_num]['NetDwellingsRangeTo']['original'],
+                                "classes": "data-table__issue--wide"
+                            }) }}
+                        {% else %}
+                            {{ renderCellWithIssue({
+                                "value": row["NetDwellingsRangeTo"],
+                                "original": issues[row_num]['NetDwellingsRangeTo']['original'],
+                                "processed": "",
+                                "tag": issues[row_num]['NetDwellingsRangeTo']['tag'],
+                                "message": issues[row_num]['NetDwellingsRangeTo']['message'],
+                                "sortValue": 0,
+                                "classes": "data-table__issue--wide"
+                            }) }}
+                        {% endif %}
+                    {% else %}
+                    <td data-sort-value="{{ '' if row['NetDwellingsRangeTo'] == None else row['NetDwellingsRangeTo'] }}">{{ "" if row["NetDwellingsRangeTo"] == None else row["NetDwellingsRangeTo"] }}</td>
+                    {% endif %}
+
+                    <td>{{ "" if row["FirstAddedDate"] == None else row["FirstAddedDate"] }}</td>
+
+                    {# LastUpdatedDate #}
+                    {% if issues[row_num] and issues[row_num]['LastUpdatedDate'] %}
+                        {% if issues[row_num]['LastUpdatedDate']['tag'] == 'amended' %}
+                            {{ renderCellWithIssue({
+                                "value": row["LastUpdatedDate"],
+                                "original": "",
+                                "processed": row["LastUpdatedDate"],
+                                "tag": issues[row_num]['LastUpdatedDate']['tag'],
+                                "message": issues[row_num]['LastUpdatedDate']['message'],
+                                "sortValue": ""
+                            }) }}
+                        {% endif %}
+                    {% else %}
+                    <td>{{ "" if row["LastUpdatedDate"] == None else row["LastUpdatedDate"] }}</td>
+                    {% endif %}
+
+                    <td>{{ "" if row["Deliverable"] == None else row["Deliverable"] }}</td>
+                    <td>{{ "" if row["HazardousSubstances"] == None else row["HazardousSubstances"] }}</td>
+
+                    {# OrganisationURI #}
+                    {% if issues[row_num] and issues[row_num]['OrganisationURI'] %}
+                        {% if issues[row_num]['OrganisationURI']['tag'] == 'amended' %}
+                            {{ renderCellWithIssue({
+                                "value": row["OrganisationURI"],
+                                "original": "",
+                                "processed": issues[row_num]['OrganisationURI']['original'],
+                                "tag": issues[row_num]['OrganisationURI']['tag'],
+                                "message": issues[row_num]['OrganisationURI']['message'],
+                                "sortValue": ""
+                            }) }}
+                        {% else %}
+                            {{ renderCellWithIssue({
+                                "value": row["OrganisationURI"],
+                                "original": issues[row_num]['OrganisationURI']['original'],
+                                "processed": "",
+                                "tag": issues[row_num]['OrganisationURI']['tag'],
+                                "message": issues[row_num]['OrganisationURI']['message'],
+                                "sortValue": ""
+                            }) }}
+                        {% endif %}
+                    {% else %}
+                    <td>
+                        {%- if not row["OrganisationURI"] == None -%}
+                        {{ makeLinkAnAnchor(row["OrganisationURI"]) }}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+                    <td>{{ "" if row["OwnershipStatus"] == None else row["OwnershipStatus"] }}</td>
+                    <td>{{ "" if row["PermissionDate"] == None else row["PermissionDate"] }}</td>
+                    <td>{{ "" if row["PermissionType"] == None else row["PermissionType"] }}</td>
+                    <td>{%- if row["PlanningHistory"] %}
+                        {% set urls = row["PlanningHistory"]|check_for_multiple %}
+                            {%- if urls is iterable and urls is not string %}
+                                {%- for url in urls %}
+                                    {{ makeLinkAnAnchor(url) }}<br />
+                                {%- endfor %}
+                            {% else %}
+                                {{ makeLinkAnAnchor(urls) }}
+                            {% endif %}
+                        {% endif %}</td>
+                    <td>{{ "" if row["PlanningStatus"] == None else row["PlanningStatus"] }}</td>
+
+                    {# SiteplanURL #}
+                    {% if issues[row_num] and issues[row_num]['SiteplanURL'] %}
+                        {{ renderCellWithIssue({
+                            "value": row["SiteplanURL"],
+                            "original": issues[row_num]['SiteplanURL']['original'],
+                            "processed": "",
+                            "tag": issues[row_num]['SiteplanURL']['tag'],
+                            "message": issues[row_num]['SiteplanURL']['message'],
+                            "sortValue": "",
+                            "classes": "data-table__issue--wide"
+                        }) }}
+                    {% else %}
+                    <td>
+                        {%- if not row["SiteplanURL"] == None -%}
+                        {{ makeLinkAnAnchor(row["SiteplanURL"]) }}
+                        {%- endif -%}
+                    </td>
+                    {% endif %}
+
+                    <td class="data-table__notes-cell" style="min-width: 200px;">
+                        {% if row["Notes"] == None %}
+                        {% else %}
+                        <details class="govuk-details" data-module="govuk-details">
+                            <summary class="govuk-details__summary"><span class="govuk-details__summary-text">See notes</span></summary>
+                            <div class="govuk-details__text">{{ row["Notes"] }}</div>
+                        </details>
+                        {% endif %}
+                    </td>
+                    <td>{{ "" if row["EndDate"] == None else row["EndDate"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="data-table-right-shadow"></div>
+</div>
+       
+
+{% endblock %}
+
+{% set includeJQuery = "true" %}
+{% block bodyEndScripts %}
+<script src="{{ static_folder }}/javascripts/vendor/MOJFrontend.SortableTable.js"></script>
+<script src="{{ static_folder }}/javascripts/dl-frontend.js"></script>
+<script>
+    // Initialise data tables component
+    var $data_tables = document.querySelectorAll('[data-module*="data-table"]')
+    $data_tables.forEach(function(data_table) {
+        new window.DLFrontend.ScrollableTables(data_table).init()
+    })
+</script>
+
+<script>
+(function($) {
+    $(function() {
+        var sTable = new MOJFrontend.SortableTable({
+            table: $('table')[0],
+            statusVisible: true,
+            tableWrapperSelector: ".data-table__wrapper"
+        });
+    });
+}(jQuery));
+</script>
+
+<script>
+var $linkable_tables = document.querySelectorAll('[data-module*="data-linkable-table"]')
+$linkable_tables.forEach(function(linkable_table) {
+    new window.DLFrontend.LinkableTable(linkable_table).init({
+        idPrefix: "data-table-row"
+    })
+})
+</script>
+
+<script>
+    const bfs_data = {{ data | tojson }};
+    var bbox = {{ bbox | tojson }};
+    // handle error with the bounding box
+    if (isNaN(bbox[0])) {
+        bbox = [-10.855, 2.0215, 49.824, 59.479] // (min_lng, max_lng, min_lat, max_lat)
+        console.log("using default bounding box for uk");
+    }
+
+    const brownfieldSiteStyle = {
+        color: "#745729",
+        fillColor: "#745729",
+        fillOpacity: 0.5
+    };
+
+    const brownfield = L.layerGroup();
+
+    function createPopup(data) {
+        var datastring = data['SiteNameAddress'].length ? (data['SiteNameAddress'] + '<hr>') : ''
+
+        Object.keys(data).forEach(function (key) {
+            var append = ''
+
+            if (key === 'Resource') {
+                append = '<a href="https://digital-land.github.io/resource/' + data[key] + '">Full resource</a>'
+            } else if (key === 'SiteplanURL') {
+                append = '<a href="' + data[key] + '">View siteplan</a>'
+            } else if (key === 'Organisation') {
+                append = '<a href="https://digital-land.github.io/organisation/' + data[key].replace(':', '/') + '">' + data.name + '</a>'
+            } else if (key === 'name') {
+                return
+            } else {
+                append = data[key];
+                if (append == null) {
+                    append = "";
+                }
+            }
+
+            datastring = datastring + '<strong>' + key + '</strong>: ' + append + '<br>'
+        })
+
+        return datastring
+    }
+
+    function siteSize(hectares) {
+        if (isNaN(hectares)) {
+            return 100;
+        } else {
+            return (Math.sqrt((hectares * 10000) / Math.PI))
+        }
+    }
+
+    bfs_data.forEach(function(row) {
+        if (row['GeoY'] && row['GeoX']) {
+            var size = siteSize(row['Hectares']);
+            brownfieldSiteStyle.radius = size.toFixed(2);
+            L.circle([row['GeoY'], row['GeoX']], brownfieldSiteStyle).addTo(brownfield).bindPopup(createPopup(row));
+        } else {
+            console.log("no coords")
+        }
+    })
+
+    // grey-scale tiles
+    const base = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        id: 'base',
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 18
+    });
+
+    // standard tiles
+    // const base = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     id: 'base',
+    //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // })
+
+    const map = L.map('map', { preferCanvas: true, renderer: L.canvas({ padding: 0.5 }), layers: [base, brownfield] })
+        .fitBounds([[bbox[2], bbox[0]], [bbox[3], bbox[1]]]);
+    </script>
+
+{% endblock %}
