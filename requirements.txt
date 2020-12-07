@@ -3,6 +3,7 @@ click==7.1.1
 decorator==4.4.2
 Flask==1.1.1
 Flask-WTF==0.14.3
+gunicorn
 -e git+https://github.com/colmjude/govuk-jinja-components.git@854b3b479e7eda2994476844120438767d23ec3a#egg=govuk_jinja_components
 itsdangerous==1.1.0
 Jinja2==2.11.1
