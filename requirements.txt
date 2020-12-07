@@ -1,4 +1,4 @@
--e git+https://github.com/digital-land/brownfield-resources.git@57cfb50fc52efdf31000770e232d1c60cfb842a6#egg=Brownfield_resource_generator
+-e git+https://github.com/digital-land/brownfield-resources.git@92e4b59a3a65878c347530dc083664c9c49b5254#egg=Brownfield_resource_generator
 click==7.1.1
 decorator==4.4.2
 Flask==1.1.1
