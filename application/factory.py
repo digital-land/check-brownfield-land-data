@@ -36,7 +36,7 @@ def register_blueprints(app):
 
 
 def register_filters(app):
-    from resource_generator.filters import pluralise, check_for_multiple, is_valid_uri
+    from application.utils.filters import pluralise, check_for_multiple, is_valid_uri
     app.add_template_filter(pluralise)
     app.add_template_filter(check_for_multiple)
     app.add_template_filter(is_valid_uri)
