@@ -4,7 +4,7 @@
 
 Make a virtualenv for the project and install python dependencies
 
-    pip install -r requirements.txt
+    make
 
 Start the application
 
