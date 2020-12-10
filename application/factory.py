@@ -3,7 +3,10 @@ import os
 from flask import Flask, render_template
 from flask.cli import load_dotenv
 from jinja2 import PackageLoader, PrefixLoader, ChoiceLoader
+from .pipeline.brownfield_pipeline import pipeline
+from govuk_jinja_components.flask_govuk_components import GovukComponents
 
+govuk_components = GovukComponents()
 
 if os.environ['FLASK_ENV'] == 'production':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -17,6 +20,7 @@ def create_app(config_filename):
     register_blueprints(app)
     register_filters(app)
     register_templates(app)
+    pipeline.init()
     return app
 
 
@@ -36,17 +40,11 @@ def register_blueprints(app):
 
 
 def register_filters(app):
-    from application.utils.filters import pluralise, check_for_multiple, is_valid_uri
+    from application.pipeline.filters import pluralise, check_for_multiple, is_valid_uri
     app.add_template_filter(pluralise)
     app.add_template_filter(check_for_multiple)
     app.add_template_filter(is_valid_uri)
 
 
 def register_templates(app):
-    multi_loader = ChoiceLoader([
-        app.jinja_loader,
-        PrefixLoader({
-            'govuk-jinja-components': PackageLoader('govuk-jinja-components')
-        })
-    ])
-    app.jinja_loader = multi_loader
+    govuk_components.init_app(app)
