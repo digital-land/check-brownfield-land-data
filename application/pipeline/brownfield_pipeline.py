@@ -15,8 +15,14 @@ from digital_land.collection import Collection
 from digital_land.save import save
 
 
-class CollectionlessHarmoniser(Harmoniser):
+def compose(*functions):
+    def compose2(f, g):
+        return lambda x: g(f(x))
 
+    return functools.reduce(compose2, functions, lambda x: x)
+
+
+class CollectionlessHarmoniser(Harmoniser):
     def set_resource_defaults(self, resource):
         if not resource:
             return
@@ -26,8 +32,7 @@ class CollectionlessHarmoniser(Harmoniser):
             self.plugin_manager.hook.set_resource_defaults_post(resource=None)
 
 
-class BrownfieldPipeline():
-
+class BrownfieldPipeline:
     def init(self):
         self.pipeline = Pipeline("pipeline/", "brownfield-land")
         self.specification = Specification("specification/")
@@ -66,12 +71,6 @@ class BrownfieldPipeline():
             self.plugin_manager,
         )
 
-        def compose(*functions):
-            def compose2(f, g):
-                return lambda x: g(f(x))
-
-            return functools.reduce(compose2, functions, lambda x: x)
-
         pipeline = compose(
             converter.convert,
             normaliser.normalise,
@@ -81,12 +80,9 @@ class BrownfieldPipeline():
         )
 
         output = pipeline(resource_file_path)
-        save(
-            output,
-            harmonised_file_path,
-            fieldnames=self.intermediary_fieldnames
-        )
+        save(output, harmonised_file_path, fieldnames=self.intermediary_fieldnames)
         issues_file = IssuesFile(path=issues_file_path)
         issues_file.write_issues(issues)
+
 
 pipeline = BrownfieldPipeline()
