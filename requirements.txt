@@ -1,10 +1,10 @@
 -e git+https://github.com/digital-land/brownfield-resources.git@92e4b59a3a65878c347530dc083664c9c49b5254#egg=Brownfield_resource_generator
-click==7.1.1
+-e git+https://github.com/digital-land/digital-land-python.git#egg=digital-land
+click==7.1.2
 decorator==4.4.2
 Flask==1.1.1
 Flask-WTF==0.14.3
-gunicorn
--e git+https://github.com/colmjude/govuk-jinja-components.git@854b3b479e7eda2994476844120438767d23ec3a#egg=govuk_jinja_components
+gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
