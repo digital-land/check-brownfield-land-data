@@ -8,8 +8,8 @@ from govuk_jinja_components.flask_govuk_components import GovukComponents
 
 govuk_components = GovukComponents()
 
-if os.environ['FLASK_ENV'] == 'production':
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.environ["FLASK_ENV"] == "production":
+    dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(dotenv_path)
 
 
@@ -27,8 +27,9 @@ def create_app(config_filename):
 def register_errorhandlers(app):
     def render_error(error):
         # If a HTTPException, pull the `code` attribute; default to 500
-        error_code = getattr(error, 'code', 500)
+        error_code = getattr(error, "code", 500)
         return render_template("error/{0}.html".format(error_code)), error_code
+
     for errcode in [400, 401, 404, 500]:
         app.errorhandler(errcode)(render_error)
     return None
@@ -36,11 +37,13 @@ def register_errorhandlers(app):
 
 def register_blueprints(app):
     from application.blueprints.frontend.views import frontend
+
     app.register_blueprint(frontend)
 
 
 def register_filters(app):
     from application.pipeline.filters import pluralise, check_for_multiple, is_valid_uri
+
     app.add_template_filter(pluralise)
     app.add_template_filter(check_for_multiple)
     app.add_template_filter(is_valid_uri)

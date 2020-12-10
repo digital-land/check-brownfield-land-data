@@ -3,8 +3,7 @@
 from numbers import Number
 
 
-class DataAnalyser():
-
+class DataAnalyser:
     def __init__(self, data):
         super().__init__()
         self.data = data
@@ -14,38 +13,77 @@ class DataAnalyser():
         return permission_types.count("permission in principle")
 
     def count_pip_active(self):
-        permission_types = [x["PermissionType"] for x in self.data if x['EndDate'] is None]
+        permission_types = [
+            x["PermissionType"] for x in self.data if x["EndDate"] is None
+        ]
         return permission_types.count("permission in principle")
 
     def countHasLatLng(self):
-        return len([(row['GeoY'], row['GeoX']) for row in self.data if row['GeoX'] and row['GeoY']])
+        return len(
+            [
+                (row["GeoY"], row["GeoX"])
+                for row in self.data
+                if row["GeoX"] and row["GeoY"]
+            ]
+        )
 
     def end_date_count(self):
-        return len([x['EndDate'] for x in self.data if x['EndDate'] is not None])
+        return len([x["EndDate"] for x in self.data if x["EndDate"] is not None])
 
     def row_count(self):
         return len(self.data)
 
     def org_uris(self):
-        return [row['OrganisationURI'] for row in self.data]
+        return [row["OrganisationURI"] for row in self.data]
 
     def sum_max_dwellings(self):
-        return sum([x['NetDwellingsRangeTo'] for x in self.data if isinstance(x['NetDwellingsRangeTo'], Number)])
+        return sum(
+            [
+                x["NetDwellingsRangeTo"]
+                for x in self.data
+                if isinstance(x["NetDwellingsRangeTo"], Number)
+            ]
+        )
 
     def sum_max_dwellings_active(self):
-        return sum([x['NetDwellingsRangeTo'] for x in self.data if isinstance(x['NetDwellingsRangeTo'], Number) and x['EndDate'] is None])
+        return sum(
+            [
+                x["NetDwellingsRangeTo"]
+                for x in self.data
+                if isinstance(x["NetDwellingsRangeTo"], Number) and x["EndDate"] is None
+            ]
+        )
 
     def sum_min_dwellings(self):
-        return sum([x['NetDwellingsRangeFrom'] for x in self.data if isinstance(x['NetDwellingsRangeFrom'], Number)])
+        return sum(
+            [
+                x["NetDwellingsRangeFrom"]
+                for x in self.data
+                if isinstance(x["NetDwellingsRangeFrom"], Number)
+            ]
+        )
 
     def sum_min_dwellings_active(self):
-        return sum([x['NetDwellingsRangeFrom'] for x in self.data if isinstance(x['NetDwellingsRangeFrom'], Number) and x['EndDate'] is None])
+        return sum(
+            [
+                x["NetDwellingsRangeFrom"]
+                for x in self.data
+                if isinstance(x["NetDwellingsRangeFrom"], Number)
+                and x["EndDate"] is None
+            ]
+        )
 
     def total_hectares(self):
-        return sum([x['Hectares'] for x in self.data if isinstance(x['Hectares'], Number)])
+        return sum(
+            [x["Hectares"] for x in self.data if isinstance(x["Hectares"], Number)]
+        )
 
     def total_hectares_active(self):
-        h = [x['Hectares'] for x in self.data if isinstance(x['Hectares'], Number) and x['EndDate'] is None]
+        h = [
+            x["Hectares"]
+            for x in self.data
+            if isinstance(x["Hectares"], Number) and x["EndDate"] is None
+        ]
         return sum(h)
 
     def summary(self):
@@ -61,5 +99,5 @@ class DataAnalyser():
             "min_dwellings_active": self.sum_min_dwellings_active(),
             "permission_in_principle": self.count_pip(),
             "permission_in_principle_active": self.count_pip_active(),
-            "unique_organisation_uris": len(set(self.org_uris()))
+            "unique_organisation_uris": len(set(self.org_uris())),
         }
