@@ -1,12 +1,9 @@
-{% extends "leaflet-base.html" %}
+{% extends "transaction-page-base.html" %}
+
+{% set back_link_url = "/check" %}
 
 {% from "dl-partials/check-data-macros.html" import makeLinkAnAnchor -%}
 {% from "dl-partials/check-data-macros.html" import renderCellWithIssue -%}
-
-{% block beforeContent %}
- {{ super() }}
- <a href="/check" class="govuk-back-link">Back</a>
-{% endblock %}
 
 {% block content %}
 

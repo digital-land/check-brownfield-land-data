@@ -1,0 +1,20 @@
+{% extends "digital-land-frontend/dlf-base.html" %}
+
+{% block beforeContent %}
+ {{ super() }}
+ <a href="{{ back_link_url }}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+{% block header %}
+{% include 'digital-land-frontend/partials/dl-cookie-banner.html' %}
+{% from "digital-land-frontend/components/dl-header-bar/macro.html" import dlHeaderBar %}
+{{ dlHeaderBar({
+	"transaction": {
+		"name": "Check your data"
+	}
+}) }}
+{% endblock %}
+
+{% endblock%}

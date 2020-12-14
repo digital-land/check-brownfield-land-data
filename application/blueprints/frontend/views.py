@@ -74,6 +74,7 @@ def check():
 
         return render_template(
             "view-data-page.html",
+            includesMap=True,
             processed_file=harmonised_file_path.name,
             data=json_data,
             summary=analyser.summary(),
