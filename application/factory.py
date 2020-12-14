@@ -50,4 +50,17 @@ def register_filters(app):
 
 
 def register_templates(app):
+    # register govuk components
     govuk_components.init_app(app)
+    # register digital land components
+    multi_loader = ChoiceLoader([
+        app.jinja_loader,
+        PrefixLoader(
+            {
+                "digital-land-frontend": PackageLoader(
+                    "digital_land_frontend"
+                ),
+            }
+        )
+    ])
+    app.jinja_loader = multi_loader
