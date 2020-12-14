@@ -9,7 +9,7 @@ class Config(object):
     SECRET_KEY = os.getenv("SECRET_KEY")
     MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN")
     TEMP_DIR = os.getenv("TEMP_DIR", PROJECT_ROOT / "tmp")
-    MAX_CONTENT_LENGTH = os.getenv("MAX_CONTENT_LENGTH", 1024 * 1024 * 16)
+    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 1024 * 1024 * 16))
     FILE_TIME_LIMIT = os.getenv("FILE_TIME_LIMIT", False)
 
 
