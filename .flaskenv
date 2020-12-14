@@ -2,5 +2,3 @@ FLASK_ENV=development
 FLASK_CONFIG=config.DevelopmentConfig
 FLASK_APP=application.wsgi:app
 SECRET_KEY=doesnotmatter
-MAPBOX_TOKEN=pk.eyJ1IjoiYWRhbXNoaW1hbGkiLCJhIjoiY2poMjB2NWs4MGI4aTJ3bG5sOGdkM3puNyJ9.cNhwxgjFkXMuxSOMNFBKQg
-
