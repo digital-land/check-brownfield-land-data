@@ -2,6 +2,7 @@ import datetime
 import os
 from pathlib import Path
 import pandas as pd
+import secrets
 from werkzeug.utils import secure_filename
 from flask import (
     request,
@@ -33,9 +34,10 @@ def check():
     form = UploadForm()
     if form.validate_on_submit():
         file = request.files["upload"]
-        filename = secure_filename(file.filename)
-
-        file_path = Path(current_app.config["TEMP_DIR"]) / filename
+        filename = Path(secure_filename(file.filename))
+        token = secrets.token_urlsafe(16)
+        tokened_filename = filename.with_name(filename.stem + "_" + token + filename.suffix)
+        file_path = Path(current_app.config["TEMP_DIR"]) / tokened_filename
         harmonised_file_path = file_path.with_name(file_path.stem + "_harmonised.csv")
         issue_file_path = file_path.with_name(file_path.stem + "_issues.csv")
         try:
