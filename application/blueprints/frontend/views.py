@@ -54,10 +54,11 @@ def check():
             issue_data = IssueFormatter.extract_issue_data(issues_json)
             formatted_issues = IssueFormatter.format_issues_for_view(issue_data)
 
-            delay_remove_files_thread(
-                [file_path, harmonised_file_path, issue_file_path],
-                current_app.config["FILE_TIME_LIMIT"],
-            )
+            if current_app.config.get("FILE_TIME_LIMIT", False):
+                delay_remove_files_thread(
+                    [file_path, harmonised_file_path, issue_file_path],
+                    current_app.config["FILE_TIME_LIMIT"],
+                )
         except Exception as e:
             if file_path.exists():
                 os.remove(file_path)
