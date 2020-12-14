@@ -1,9 +1,6 @@
-{% extends "digital-land-frontend/dlf-base.html" %}
+{% extends "transaction-page-base.html" %}
 
-{% block beforeContent %}
- {{ super() }}
- <a href="/" class="govuk-back-link">Back</a>
-{% endblock %}
+{% set back_link_url = "/" %}
 
 {% block content %}
 
