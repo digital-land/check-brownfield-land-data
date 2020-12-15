@@ -11,3 +11,7 @@ def read_and_strip_data(file_path):
     data_frame_trimmed = data_frame_trimmed.rename(columns=lambda x: x.strip())
 
     return data_frame_trimmed
+
+
+def is_data_valid(data):
+    return data.dropna(how='all').empty
