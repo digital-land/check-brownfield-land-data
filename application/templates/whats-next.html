@@ -6,9 +6,27 @@
 
 <h1 class="govuk-heading-xl">Download and publish your data</h1>
 
-<form action="/processed/{{processed_file}}" method="get">
-    <button class="govuk-button" type="submit">Download processed file</button>
-</form>
+<p class="govuk-body">The data has been processed and you have checked it looks correct.</p>
+
+<p class="govuk-body">Next steps:</p>
+
+<ol class="govuk-list govuk-list--bullet">
+    <li>download the processed data</li>
+    <li>publish it on your local authority website</li>
+</ol>
+
+<a class="highlight-box govuk-!-margin-top-6" href="/processed/{{processed_file}}">
+    <h3 class="govuk-heading-m highlight-box__title govuk-!-margin-top-0">Download the data</h3>
+    <p class="govuk-body govuk-!-margin-bottom-0">Get a copy of the processed data.</p>
+</a>
+
+<h3 class="govuk-heading-m">What happens next?</h3>
+
+<p class="govuk-body">Once you have published the file on your local authority website, you should send the url to the Digital Land team (<a href="mailto:digitalland@communities.gov.uk">digitalland@communities.gov.uk</a>).</p>
+
+<p class="govuk-body">We will collect the published files and use them to produce a <a href="https://digital-land.github.io/dataset/brownfield-land/" class="govuk-link">national register of brownfield land</a>.</p>
+
+<p class="govuk-body"><a href="/check">Check another file</a>.</p>
 
 {% endblock%}
 
