@@ -34,9 +34,13 @@
 {{ dlStepByStep({
 	"entries": [
 		{
-			"heading": "Upload CSV"
+            "heading": "Upload CSV",
+            "text": filename,
+            "href": "/check"
 		},{
-			"heading": "View data"
+            "heading": "View data",
+            "text": summary['total']|string + " brownfield sites",
+            "href": "/check"
 		},{
             "heading": "Download",
             "current": True

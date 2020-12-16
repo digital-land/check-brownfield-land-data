@@ -37,8 +37,11 @@ def check():
     if form.validate_on_submit():
         file = request.files["upload"]
         filename = Path(secure_filename(file.filename))
+        session["filename"] = file.filename
         token = secrets.token_urlsafe(16)
-        tokened_filename = filename.with_name(filename.stem + "_" + token + filename.suffix)
+        tokened_filename = filename.with_name(
+            filename.stem + "_" + token + filename.suffix
+        )
         file_path = Path(current_app.config["TEMP_DIR"]) / tokened_filename
         harmonised_file_path = file_path.with_name(file_path.stem + "_harmonised.csv")
         issue_file_path = file_path.with_name(file_path.stem + "_issues.csv")
@@ -59,6 +62,7 @@ def check():
 
             # analyse data
             analyser = DataAnalyser(json_data)
+            session["data_summary"] = analyser.summary()
 
             # get the formatted issues
             issue_data = IssueFormatter.extract_issue_data(issues_json)
@@ -83,9 +87,10 @@ def check():
         return render_template(
             "view-data-page.html",
             includesMap=True,
+            filename=filename,
             processed_file=harmonised_file_path.name,
             data=json_data,
-            summary=analyser.summary(),
+            summary=session["data_summary"],
             issues=formatted_issues,
             bbox={},  # increase_bounding_box(bounding_box(data), 1),
             today=datetime.datetime.today().date().strftime("%Y-%m-%d"),
@@ -93,11 +98,17 @@ def check():
 
     return render_template("upload.html", form=form)
 
+
 @frontend.route("/next")
 def whatnext():
     # only render page if a harmonised file exists
     if "harmonised_file_name" in session:
-        return render_template("whats-next.html", processed_file=session["harmonised_file_name"])
+        return render_template(
+            "whats-next.html",
+            processed_file=session["harmonised_file_name"],
+            summary=session["data_summary"],
+            filename=session["filename"],
+        )
     return redirect("/")
 
 
