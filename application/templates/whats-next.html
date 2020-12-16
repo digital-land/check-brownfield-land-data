@@ -1,0 +1,13 @@
+{% extends "transaction-page-base.html" %}
+
+{% set back_link_url = "/check" %}
+
+{% block content %}
+
+<h1 class="govuk-heading-xl">What happens next?</h1>
+
+<form action="/processed/{{processed_file}}" method="get">
+    <button class="govuk-button" type="submit">Download processed file</button>
+</form>
+
+{% endblock%}

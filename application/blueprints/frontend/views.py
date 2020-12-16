@@ -8,6 +8,8 @@ from flask import (
     request,
     current_app,
     Blueprint,
+    session,
+    redirect,
     render_template,
     json,
     send_from_directory,
@@ -43,6 +45,7 @@ def check():
         try:
             file.save(file_path)
             pipeline.process(file_path, harmonised_file_path, issue_file_path)
+            session["harmonised_file_name"] = harmonised_file_path.name
             issues_data = pd.read_csv(issue_file_path, sep=",")
             data = read_and_strip_data(harmonised_file_path)
 
@@ -89,6 +92,13 @@ def check():
         )
 
     return render_template("upload.html", form=form)
+
+@frontend.route("/next")
+def whatnext():
+    # only render page if a harmonised file exists
+    if "harmonised_file_name" in session:
+        return render_template("whats-next.html", processed_file=session["harmonised_file_name"])
+    return redirect("/")
 
 
 @frontend.route("/processed/<filename>")
