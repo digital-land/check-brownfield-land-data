@@ -2,12 +2,27 @@
 
 {% set back_link_url = "/check" %}
 
-{% block content %}
+{% block pageContent %}
 
-<h1 class="govuk-heading-xl">What happens next?</h1>
+<h1 class="govuk-heading-xl">Download and publish your data</h1>
 
 <form action="/processed/{{processed_file}}" method="get">
     <button class="govuk-button" type="submit">Download processed file</button>
 </form>
 
 {% endblock%}
+
+{% block stepByStep %}
+{{ dlStepByStep({
+	"entries": [
+		{
+			"heading": "Upload CSV"
+		},{
+			"heading": "View data"
+		},{
+            "heading": "Download",
+            "current": True
+		}
+	]
+}) }}
+{% endblock stepByStep %}

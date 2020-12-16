@@ -1,11 +1,10 @@
 {% extends "digital-land-frontend/dlf-base.html" %}
+{%- from "digital-land-frontend/components/step-by-step/macro.html" import dlStepByStep %}
 
 {% block beforeContent %}
  {{ super() }}
  <a href="{{ back_link_url }}" class="govuk-back-link">Back</a>
 {% endblock %}
-
-{% block content %}
 
 {% block header %}
 {% include 'digital-land-frontend/partials/dl-cookie-banner.html' %}
@@ -17,4 +16,16 @@
 }) }}
 {% endblock %}
 
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+	{% block pageContent %}{% endblock pageContent %}
+	</div>
+    <div class="govuk-grid-column-one-third">
+        <div class="dl-sbs__nav__title">
+            <h4 class="govuk-heading-s">Check your brownfield land data</h4>
+        </div>
+        {% block stepByStep %}{% endblock stepByStep %}
+    </div>
+</div>
 {% endblock%}
