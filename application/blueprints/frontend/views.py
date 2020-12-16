@@ -22,6 +22,7 @@ from application.pipeline.data_analyser import DataAnalyser
 from application.pipeline.issue_formatter import IssueFormatter
 from application.pipeline.brownfield_pipeline import pipeline
 from application.pipeline.utils import read_and_strip_data, is_data_valid
+from application.pipeline.bbox import bounding_box, increase_bounding_box
 
 frontend = Blueprint("frontend", __name__, template_folder="templates")
 
@@ -92,7 +93,7 @@ def check():
             data=json_data,
             summary=session["data_summary"],
             issues=formatted_issues,
-            bbox={},  # increase_bounding_box(bounding_box(data), 1),
+            bbox=increase_bounding_box(bounding_box(data), 1),
             today=datetime.datetime.today().date().strftime("%Y-%m-%d"),
         )
 
