@@ -45,7 +45,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Facts from the data</h2>
-        <p class="govuk-data">Check the facts below are accurate.</p>
+        <p class="govuk-body">Check the facts below are accurate.</p>
         <p class="govuk-body">The data references <span class="govuk-!-font-weight-bold">{{ summary.unique_organisation_uris }}</span> {{"organisation"|pluralise("", "s", summary.unique_organisation_uris)}}.</p>
         <p class="govuk-body">It reports <span class="govuk-!-font-weight-bold">{{ summary.total }} brownfield sites</span>. <span class="govuk-!-font-weight-bold">{{ summary.end_dates }}</span> of these have an <a href="https://digital-land.github.io/guidance/data-principles/#end-dates">end date</a> and are classed as historical brownfield land sites.</p>
         <p class="govuk-body">Not including sites with an end date, there are:</p>
@@ -71,12 +71,14 @@
 <h3 class="govuk-heading-m govuk-!-margin-top-6">Site locations</h3>
 <p class="govuk-body">Each site has been plotted using the coordinates provided. Check these are in the right area for your local authority.</p>
 
-<div id="map" style="width: 100%; height: 640px;"></div>
-<div class="map__site-count{{ '' if summary.hasLatLng == data|length else ' map__site-count--warning' }} govuk-!-margin-bottom-9">{% if summary.hasLatLng == data|length %}
-    All {{ summary.hasLatLng }} {{ "site"|pluralise("", "s", data|length)}} plotted.
-    {%- else -%}
-    {{ summary.hasLatLng }} of {{ data|length }} sites plotted. This could be because there are missing coordinates in the data.
-    {% endif %}</div>
+<div class="map-wrapper">
+    <div id="map" style="width: 100%; height: 640px;"></div>
+    <div class="map__site-count{{ '' if summary.hasLatLng == data|length else ' map__site-count--warning' }} govuk-!-margin-bottom-9">{% if summary.hasLatLng == data|length %}
+        All {{ summary.hasLatLng }} {{ "site"|pluralise("", "s", data|length)}} plotted.
+        {%- else -%}
+        {{ summary.hasLatLng }} of {{ data|length }} sites plotted. This could be because there are missing coordinates in the data.
+        {% endif %}</div>
+</div>
 
 <h3 class="govuk-heading-m govuk-!-margin-top-6">Records</h3>
 
