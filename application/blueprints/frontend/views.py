@@ -13,7 +13,7 @@ from flask import (
     render_template,
     json,
     send_from_directory,
-    url_for
+    url_for,
 )
 
 from application.pipeline.tasks import delay_remove_files_thread
@@ -39,11 +39,12 @@ def check():
     if form.validate_on_submit():
         file = request.files["upload"]
         filename = Path(secure_filename(file.filename))
-        session["filename"] = file.filename
         token = secrets.token_urlsafe(16)
         tokened_filename = filename.with_name(
             filename.stem + "_" + token + filename.suffix
         )
+        session["filename"] = file.filename
+        session["tokened_filename"] = tokened_filename.name
         file_path = Path(current_app.config["TEMP_DIR"]) / tokened_filename
         harmonised_file_path = file_path.with_name(file_path.stem + "_harmonised.csv")
         issue_file_path = file_path.with_name(file_path.stem + "_issues.csv")
@@ -68,7 +69,7 @@ def check():
                 str(e) + ". Failed to process file uploaded by user"
             ).with_traceback(e.__traceback__)
 
-        return redirect(url_for('frontend.view_data', filename=tokened_filename))
+        return redirect(url_for("frontend.view_data", filename=tokened_filename))
 
     return render_template("upload.html", form=form)
 
@@ -117,6 +118,7 @@ def whatnext():
         return render_template(
             "whats-next.html",
             processed_file=session["harmonised_file_name"],
+            tokened_filename=session["tokened_filename"],
             summary=session["data_summary"],
             filename=session["filename"],
         )

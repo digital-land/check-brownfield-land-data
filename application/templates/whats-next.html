@@ -1,6 +1,6 @@
 {% extends "transaction-page-base.html" %}
 
-{% set back_link_url = "/check" %}
+{% set back_link_url = "/viewdata/" + tokened_filename %}
 
 {% block pageContent %}
 
@@ -40,7 +40,7 @@
 		},{
             "heading": "View data",
             "text": summary['total']|string + " brownfield sites",
-            "href": "/check"
+            "href": back_link_url
 		},{
             "heading": "Download",
             "current": True
