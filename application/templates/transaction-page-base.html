@@ -1,6 +1,8 @@
 {% extends "digital-land-frontend/dlf-base.html" %}
 {%- from "digital-land-frontend/components/step-by-step/macro.html" import dlStepByStep %}
 
+{% block pageTitle %}Check your brownfield data | Digital Land | brownfield-sites-validator.herokuapp.com{% endblock %}
+
 {% block beforeContent %}
  {{ super() }}
  <a href="{{ back_link_url }}" class="govuk-back-link">Back</a>
