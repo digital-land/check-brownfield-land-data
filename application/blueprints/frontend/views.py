@@ -101,7 +101,7 @@ def view_data(filename):
     return render_template(
         "view-data-page.html",
         includesMap=True,
-        filename=filename,
+        filename=session["filename"],
         processed_file=harmonised_file_path.name,
         data=json_data,
         summary=session["data_summary"],
