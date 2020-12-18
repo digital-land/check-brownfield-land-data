@@ -84,7 +84,7 @@ def view_data(filename):
 
     # Check if data is empty/valid
     # TODO: Render appropriate template
-    if is_data_valid(data):
+    if not is_data_valid(data):
         pass
 
     json_data = json.loads(data.to_json(orient="records"))
