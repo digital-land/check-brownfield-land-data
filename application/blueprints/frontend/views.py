@@ -13,6 +13,7 @@ from flask import (
     render_template,
     json,
     send_from_directory,
+    url_for
 )
 
 from application.pipeline.tasks import delay_remove_files_thread
@@ -50,24 +51,6 @@ def check():
             file.save(file_path)
             pipeline.process(file_path, harmonised_file_path, issue_file_path)
             session["harmonised_file_name"] = harmonised_file_path.name
-            issues_data = pd.read_csv(issue_file_path, sep=",")
-            data = read_and_strip_data(harmonised_file_path)
-
-            # Check if data is empty/valid
-            # TODO: Render appropriate template
-            if is_data_valid(data):
-                pass
-
-            json_data = json.loads(data.to_json(orient="records"))
-            issues_json = json.loads(issues_data.to_json(orient="records"))
-
-            # analyse data
-            analyser = DataAnalyser(json_data)
-            session["data_summary"] = analyser.summary()
-
-            # get the formatted issues
-            issue_data = IssueFormatter.extract_issue_data(issues_json)
-            formatted_issues = IssueFormatter.format_issues_for_view(issue_data)
 
             if current_app.config["FILE_TIME_LIMIT"]:
                 delay_remove_files_thread(
@@ -85,19 +68,46 @@ def check():
                 str(e) + ". Failed to process file uploaded by user"
             ).with_traceback(e.__traceback__)
 
-        return render_template(
-            "view-data-page.html",
-            includesMap=True,
-            filename=filename,
-            processed_file=harmonised_file_path.name,
-            data=json_data,
-            summary=session["data_summary"],
-            issues=formatted_issues,
-            bbox=increase_bounding_box(bounding_box(data), 1),
-            today=datetime.datetime.today().date().strftime("%Y-%m-%d"),
-        )
+        return redirect(url_for('frontend.view_data', filename=tokened_filename))
 
     return render_template("upload.html", form=form)
+
+
+@frontend.route("/viewdata/<filename>")
+def view_data(filename):
+    file_path = Path(current_app.config["TEMP_DIR"]) / filename
+    harmonised_file_path = file_path.with_name(file_path.stem + "_harmonised.csv")
+    issue_file_path = file_path.with_name(file_path.stem + "_issues.csv")
+    issues_data = pd.read_csv(issue_file_path, sep=",")
+    data = read_and_strip_data(harmonised_file_path)
+
+    # Check if data is empty/valid
+    # TODO: Render appropriate template
+    if is_data_valid(data):
+        pass
+
+    json_data = json.loads(data.to_json(orient="records"))
+    issues_json = json.loads(issues_data.to_json(orient="records"))
+
+    # analyse data
+    analyser = DataAnalyser(json_data)
+    session["data_summary"] = analyser.summary()
+
+    # get the formatted issues
+    issue_data = IssueFormatter.extract_issue_data(issues_json)
+    formatted_issues = IssueFormatter.format_issues_for_view(issue_data)
+
+    return render_template(
+        "view-data-page.html",
+        includesMap=True,
+        filename=filename,
+        processed_file=harmonised_file_path.name,
+        data=json_data,
+        summary=session["data_summary"],
+        issues=formatted_issues,
+        bbox=increase_bounding_box(bounding_box(data), 1),
+        today=datetime.datetime.today().date().strftime("%Y-%m-%d"),
+    )
 
 
 @frontend.route("/next")
