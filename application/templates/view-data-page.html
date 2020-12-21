@@ -15,7 +15,7 @@
         <p class="govuk-body">The data you uploaded has been run through the <a href="https://digital-land.github.io/guidance/pipeline/">Digital Land pipeline</a>. The pipeline reads the data and tries to fix any issues it sees.</p>
         <p class="govuk-body">The processed data has been analysed, plotted on a map and presented in a data table. Check this to see if it makes sense.</p>
         {{ govukWarningText({
-            "text": "The pipeline can not fix all issues. You may have to fix these manually. Speak to the digital land team if you need further help.",
+            "text": "The pipeline can not fix all issues. You may have to fix some manually. Contact the digital land team if you need further help.",
             "iconFallbackText": "Warning"
           }) }}
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
@@ -35,7 +35,7 @@
                     "heading": "View data",
                     "current": True
                 },{
-                    "heading": "Download"
+                    "heading": "Next steps"
                 }
             ]
         }) }}
@@ -47,7 +47,8 @@
         <h2 class="govuk-heading-l">Facts from the data</h2>
         <p class="govuk-body">Check the facts below are accurate.</p>
         <p class="govuk-body">The data references <span class="govuk-!-font-weight-bold">{{ summary.unique_organisation_uris }}</span> {{"organisation"|pluralise("", "s", summary.unique_organisation_uris)}}.</p>
-        <p class="govuk-body">It reports <span class="govuk-!-font-weight-bold">{{ summary.total }} brownfield sites</span>. <span class="govuk-!-font-weight-bold">{{ summary.end_dates }}</span> of these have an <a href="https://digital-land.github.io/guidance/data-principles/#end-dates">end date</a> and are classed as historical brownfield land sites.</p>
+        <p class="govuk-body">It reports <span class="govuk-!-font-weight-bold">{{ summary.total }} brownfield sites</span>.</p>
+        <p class="govuk-body"><span class="govuk-!-font-weight-bold">{{ summary.end_dates }}</span> of these have an <a href="https://digital-land.github.io/guidance/data-principles/#end-dates">end date</a> and are classed as historical brownfield land sites.</p>
         <p class="govuk-body">Not including sites with an end date, there are:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>
@@ -337,9 +338,9 @@
 
 <h3 class="govuk-heading-m">Is the data correct?</h3>
 
-<p class="govuk-body">If there are mistakes in the data, you may need to correct these manually.</p>
+<p class="govuk-body">If there are mistakes in the data, you will need to correct these manually.</p>
 
-<p class="govuk-body">We still recommend you download the processed data and fix that.</p>
+<p class="govuk-body">We recommend you download the processed data and fix that.</p>
 
 <a href="/next" class="govuk-button">Continue</a>
 
