@@ -1,7 +1,7 @@
 {% extends "transaction-page-base.html" %}
 {% from "govuk-jinja-components/components/warning-text/macro.jinja" import govukWarningText %}
 
-{% set back_link_url = "/check" %}
+{% set back_link_url = url_for('frontend.check') %}
 
 {% from "dl-partials/check-data-macros.html" import makeLinkAnAnchor -%}
 {% from "dl-partials/check-data-macros.html" import renderCellWithIssue -%}
@@ -30,7 +30,7 @@
                 {
                     "heading": "Upload CSV",
                     "text": filename,
-                    "href": "/check"
+                    "href": url_for('frontend.check')
                 },{
                     "heading": "View data",
                     "current": True
@@ -342,7 +342,7 @@
 
 <p class="govuk-body">We recommend you download the processed data and fix that.</p>
 
-<a href="/next" class="govuk-button">Continue</a>
+<a href="{{ url_for('frontend.next') }}" class="govuk-button">Continue</a>
 
 {% endblock %}
 

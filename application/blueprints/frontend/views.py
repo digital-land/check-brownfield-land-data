@@ -33,7 +33,7 @@ def index():
     return render_template("index.html")
 
 
-@frontend.route("/check", methods=["GET", "POST"])
+@frontend.route("/upload", methods=["GET", "POST"])
 def check():
     form = UploadForm()
     if form.validate_on_submit():
@@ -112,7 +112,7 @@ def view_data(filename):
 
 
 @frontend.route("/next")
-def whatnext():
+def next():
     # only render page if a harmonised file exists
     if "harmonised_file_name" in session:
         return render_template(

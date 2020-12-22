@@ -1,6 +1,6 @@
 {% extends "transaction-page-base.html" %}
 
-{% set back_link_url = "/viewdata/" + tokened_filename %}
+{% set back_link_url = url_for('frontend.view_data', filename=tokened_filename) %}
 
 {% block pageContent %}
 
@@ -36,7 +36,7 @@
 		{
             "heading": "Upload CSV",
             "text": filename,
-            "href": "/check"
+            "href": url_for('frontend.check')
 		},{
             "heading": "View data",
             "text": summary['total']|string + " brownfield sites",
