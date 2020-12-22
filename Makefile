@@ -2,6 +2,13 @@ CACHE_DIR=var/cache
 TMP_DIR=tmp/
 PIPELINE=pipeline/
 
+# work in UTF-8
+LANGUAGE := en_GB.UTF-8
+LANG := C.UTF-8
+
+# for consistent collation on different machines
+LC_COLLATE := C.UTF-8
+
 all:: $(TMP_DIR) $(CACHE_DIR)/organisation.csv $(PIPELINE) init
 
 $(TMP_DIR)::
@@ -38,5 +45,6 @@ assets/js:
 	mkdir -p $(STATIC_DIR)/javascripts
 	cd $(LOCAL_FRONTEND) && gulp js
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/ $(STATIC_DIR)/javascripts/
+	cp src/javascripts/dl-cookies.js $(STATIC_DIR)/javascripts/dl-cookies.js
 
 assets:: assets/css assets/js
