@@ -260,7 +260,7 @@ Map.prototype.setupOptions = function (params) {
     default_pos: params.default_pos || [52.561928, -1.464854],
     default_zoom: params.minZoom || 6,
     minZoom: params.minZoom || 6,
-    maxZoom: params.maxZoom || 16
+    maxZoom: params.maxZoom || 18
   };
   this.mapId = params.mapId || 'aMap';
 };
@@ -326,7 +326,7 @@ const popupTemplate =
       '{datesSection}' +
     '</div>' +
     '<div class="bfs__footer">' +
-      'From resource: <a href="https://digital-land.github.io/resource/{resource}" class="govuk-link">{resourceTrunc}</a>' +
+      '<a href="/{slug}" class="govuk-link">View complete record</a>' +
     '</div>' +
   '</div>';
 

@@ -79,6 +79,14 @@
         {%- else -%}
         {{ summary.hasLatLng }} of {{ data|length }} sites plotted. This could be because there are missing coordinates in the data.
         {% endif %}</div>
+    <div class="bfs-hectares-key dl-map__panel-bottom-left">
+        <h3 class="govuk-heading-s govuk-visually-hidden">Key</h3>
+        <h4 class="bfs-hectares-key__title">Site size in hectares</h4>
+        <div class="bfs-hectares-key__container">
+            <div class="bfs-hectare"/></div>
+            <div class="bfs-hectare bfs-hectare--lg"></div>
+        </div>
+    </div>
 </div>
 
 <h3 class="govuk-heading-m govuk-!-margin-top-6">Records</h3>
