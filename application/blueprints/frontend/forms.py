@@ -7,10 +7,6 @@ class UploadForm(FlaskForm):
     upload = FileField(
         "file",
         validators=[
-            FileRequired(),
-            FileAllowed(
-                ["csv", "xlsx", "xlsm"],
-                message="You should upload a file with the extension .csv, .xlsx or .xlsm",
-            ),
+            FileRequired()
         ],
     )

@@ -13,5 +13,5 @@ def read_and_strip_data(file_path):
     return data_frame_trimmed
 
 
-def is_data_valid(data):
+def is_data_empty(data):
     return data.dropna(how='all').empty

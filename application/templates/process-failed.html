@@ -1,0 +1,17 @@
+{% extends "transaction-page-base.html" %}
+
+{% set back_link_url = "/" %}
+
+{% block pageContent %}
+
+<h1 class="govuk-heading-xl">Your data could not be processed</h1>
+
+<p class="govuk-body">We were unable to process your data. Check the following and try again:</p>
+
+<ol class="govuk-list govuk-list--bullet">
+    <li>your file is saved as a CSV or XLS format</li>
+    <li>the data meets the <a href="https://www.gov.uk/government/publications/brownfield-land-registers-data-standard/publish-your-brownfield-land-data">guidance</a> as published on GOV.UK</li>
+</ol>
+
+<p class="govuk-body">If you are still unable to check your data then contact us at <a href="mailto:digitalland@communities.gov.uk">digitalland@communities.gov.uk</a></p>
+{% endblock%}

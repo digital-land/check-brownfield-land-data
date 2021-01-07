@@ -22,7 +22,7 @@ from application.blueprints.frontend.forms import UploadForm
 from application.pipeline.data_analyser import DataAnalyser
 from application.pipeline.issue_formatter import IssueFormatter
 from application.pipeline.brownfield_pipeline import pipeline
-from application.pipeline.utils import read_and_strip_data, is_data_valid
+from application.pipeline.utils import read_and_strip_data, is_data_empty
 from application.pipeline.bbox import bounding_box, increase_bounding_box
 
 frontend = Blueprint("frontend", __name__, template_folder="templates")
@@ -83,9 +83,8 @@ def view_data(filename):
     data = read_and_strip_data(harmonised_file_path)
 
     # Check if data is empty/valid
-    # TODO: Render appropriate template
-    if not is_data_valid(data):
-        pass
+    if is_data_empty(data):
+        return render_template("process-failed.html")
 
     json_data = json.loads(data.to_json(orient="records"))
     issues_json = json.loads(issues_data.to_json(orient="records"))
