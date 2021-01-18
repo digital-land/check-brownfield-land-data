@@ -9,7 +9,7 @@ LANG := C.UTF-8
 # for consistent collation on different machines
 LC_COLLATE := C.UTF-8
 
-all:: $(TMP_DIR) $(CACHE_DIR)/organisation.csv $(PIPELINE) init
+all:: $(TMP_DIR) $(CACHE_DIR)/organisation.csv init
 
 $(TMP_DIR)::
 	@mkdir -p $(TMP_DIR)
@@ -18,7 +18,8 @@ $(CACHE_DIR)/organisation.csv::
 	@mkdir -p $(CACHE_DIR)
 	curl -qs "https://raw.githubusercontent.com/digital-land/organisation-dataset/master/collection/organisation.csv" > $@
 
-$(PIPELINE)::
+pipeline::
+	rm -rf $(PIPELINE)
 	@mkdir -p $(PIPELINE)
 	cd $(PIPELINE) && \
 	git init temp && \
@@ -30,6 +31,11 @@ $(PIPELINE)::
 	cd $(PIPELINE) && \
 	mv temp/pipeline/* ./ && \
 	rm -rf temp
+
+commit-pipeline::
+	git add pipeline
+	git diff --quiet && git diff --staged --quiet || (git commit -m "Commit pipeline $(shell date +%F)")
+
 
 include makerules/makerules.mk
 
