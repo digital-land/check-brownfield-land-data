@@ -34,7 +34,7 @@ pipeline::
 
 commit-pipeline::
 	git add pipeline
-	git diff --quiet && git diff --staged --quiet || (git commit -m "Commit pipeline $(shell date +%F)")
+	git diff --quiet && git diff --staged --quiet || (git commit -m "Commit pipeline $(shell date +%F)"; git push origin $(BRANCH))
 
 
 include makerules/makerules.mk
