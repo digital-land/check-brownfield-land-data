@@ -47,15 +47,15 @@ class HarmoniserPlugin:
 
     @digital_land.hookimpl
     def set_resource_defaults_post(self):
-        if "organisation" in self.harmoniser.default_values:
-            self.harmoniser.default_values["OrganisationURI"] = self.organisation_uri[
-                self.harmoniser.default_values["organisation"].lower()
-            ]
-
         if "entry-date" in self.harmoniser.default_values:
             self.harmoniser.default_values[
                 "LastUpdatedDate"
             ] = self.harmoniser.default_values["entry-date"]
+
+        if "organisation" in self.harmoniser.default_values:
+            key = self.harmoniser.default_values["organisation"].lower()
+            if key in self.organisation_uri:
+                self.harmoniser.default_values["OrganisationURI"] = self.organisation_uri[key]
 
     def lower_uri(self, value):
         return "".join(value.split()).lower()
