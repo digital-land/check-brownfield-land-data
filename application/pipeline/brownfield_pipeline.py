@@ -38,7 +38,8 @@ class BrownfieldPipeline:
         self.specification = Specification("specification/")
         self.plugin_manager = get_plugin_manager()
 
-        fieldnames = self.specification.schema_field[self.pipeline.schema].copy()
+        schema = specification.pipeline[pipeline.name]["schema"]
+        fieldnames = specification.schema_field[schema].copy()
         replacement_fields = list(self.pipeline.transformations().keys())
         for field in replacement_fields:
             if field in fieldnames:
