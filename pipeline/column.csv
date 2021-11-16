@@ -108,3 +108,18 @@ brownfield-land,,DATE LAST UPDATED,LastUpdatedDate
 brownfield-land,,Date last updated on the register,LastUpdatedDate
 brownfield-land,,Last Updated Date,LastUpdatedDate
 brownfield-land,,LAND DELIVERABLE?,Deliverable
+brownfield-land,,organisati,OrganisationURI
+brownfield-land,,siterefere,SiteReference
+brownfield-land,,sitenamead,SiteNameAddress
+brownfield-land,,siteplanur,SiteplanURL
+brownfield-land,,ownerships,OwnershipStatus
+brownfield-land,,hectares,Hectares
+brownfield-land,,planningst,PlanningStatus
+brownfield-land,,permission,PermissionType
+brownfield-land,,planninghi,PlanningHistory
+brownfield-land,,deliverabl,Deliverable
+brownfield-land,,netdwellin,NetDwellingsRangeFrom
+brownfield-land,,netdwell_1,NetDwellingsRangeTo
+brownfield-land,,hazardouss,HazardousSubstances
+
+
