@@ -2,7 +2,7 @@
 -e git+https://github.com/digital-land/digital-land-python.git#egg=digital-land
 click==7.1.2
 decorator==4.4.2
-Flask==1.1.1
+Flask==2.3.2
 Flask-WTF==0.14.3
 gunicorn==20.0.4
 itsdangerous==1.1.0
