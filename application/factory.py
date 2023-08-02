@@ -16,7 +16,7 @@ if os.environ["FLASK_ENV"] == "production":
 def create_app(config_filename):
     app = Flask(__name__)
     app.config.from_object(config_filename)
-    register_errorhandlers(app)
+    # register_errorhandlers(app)
     register_blueprints(app)
     register_filters(app)
     register_templates(app)
