@@ -1,3 +1,96 @@
+.govuk-button-group {
+  margin-bottom: 5px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-button-group {
+    margin-bottom: 15px;
+  }
+}
+
+.govuk-button-group .govuk-link {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.1875;
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/*! Copyright (c) 2011 by Margaret Calvert & Henrik Kubel. All rights reserved. The font has been customised for exclusive use on gov.uk. This cut is not commercially available. */
+/* stylelint-disable-line scss/comment-no-loud  */
+@font-face {
+  font-family: "GDS Transport";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/static/govuk/assets/fonts/light-94a07e06a1-v2.woff2") format("woff2"), url("/static/govuk/assets/fonts/light-f591b13f7d-v2.woff") format("woff");
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "GDS Transport";
+  font-style: normal;
+  font-weight: bold;
+  src: url("/static/govuk/assets/fonts/bold-b542beb274-v2.woff2") format("woff2"), url("/static/govuk/assets/fonts/bold-affa96571d-v2.woff") format("woff");
+  font-display: fallback;
+}
+
+@media print {
+  .govuk-button-group .govuk-link {
+    font-family: sans-serif;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-button-group .govuk-link {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1;
+  }
+}
+
+@media print {
+  .govuk-button-group .govuk-link {
+    font-size: 14pt;
+    line-height: 19px;
+  }
+}
+
+.govuk-button-group .govuk-button {
+  margin-bottom: 17px;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-button-group {
+    margin-right: -15px;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+  }
+  .govuk-button-group .govuk-button,
+  .govuk-button-group .govuk-link {
+    margin-right: 15px;
+  }
+  .govuk-button-group .govuk-link {
+    text-align: left;
+  }
+}
+
 .govuk-form-group {
   margin-bottom: 20px;
 }
@@ -305,9 +398,9 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-container {
   display: block;
   overflow-x: auto;
-  padding: 0.5em;
-  background-color: #f3f2f1;
-  font-family: monospace;
+  padding: 20px;
+  border: 1px solid #b1b4b6;
+  background-color: #f9f9f8;
 }
 
 /* Base color: saturation 0; */
@@ -390,10 +483,13 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 @media (min-width: 40.0625em) {
   .app-nav {
+    display: -ms-flexbox;
     display: flex;
     background-color: #f8f8f8;
-    flex-direction: column;
-    flex: 1 0 auto;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    -ms-flex: 1 0 auto;
+        flex: 1 0 auto;
   }
 }
 
@@ -407,24 +503,6 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   font-size: 1rem;
   line-height: 1.25;
   width: 100%;
-}
-
-/*! Copyright (c) 2011 by Margaret Calvert & Henrik Kubel. All rights reserved. The font has been customised for exclusive use on gov.uk. This cut is not commercially available. */
-/* stylelint-disable-line scss/comment-no-loud  */
-@font-face {
-  font-family: "GDS Transport";
-  font-style: normal;
-  font-weight: normal;
-  src: url("/static/govuk/assets/fonts/light-94a07e06a1-v2.woff2") format("woff2"), url("/static/govuk/assets/fonts/light-f591b13f7d-v2.woff") format("woff");
-  font-display: fallback;
-}
-
-@font-face {
-  font-family: "GDS Transport";
-  font-style: normal;
-  font-weight: bold;
-  src: url("/static/govuk/assets/fonts/bold-b542beb274-v2.woff2") format("woff2"), url("/static/govuk/assets/fonts/bold-affa96571d-v2.woff") format("woff");
-  font-display: fallback;
 }
 
 @media print {
@@ -483,22 +561,21 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   color: #0b0c0c;
 }
 
-.app-nav__list > .app-nav__list-item a {
-  display: inline-block;
+.app-nav__link {
   font-weight: 700;
   color: #1d70b8;
   text-decoration: none;
 }
 
-.app-nav__list > .app-nav__list-item a:visited {
+.app-nav__link:visited {
   color: #1d70b8;
 }
 
-.app-nav__list > .app-nav__list-item a:hover:not(:focus):not(:active) {
+.app-nav__link:hover:not(:focus):not(:active) {
   text-decoration: underline;
 }
 
-.app-nav__list > .app-nav__list-item a:focus {
+.app-nav__link:focus {
   outline: 3px solid transparent;
   color: #0b0c0c;
   background-color: #ffdd00;
@@ -509,6 +586,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 @media (min-width: 40.0625em) {
   .app-nav__body {
+    display: -ms-flexbox;
     display: flex;
     position: relative;
     min-height: 0;
@@ -525,7 +603,8 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 @media (min-width: 40.0625em) {
   .app-nav__subnav {
     width: 210px;
-    flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
   }
 }
 
@@ -537,10 +616,13 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 @media (min-width: 40.0625em) {
   .app-nav__content {
+    display: -ms-flexbox;
     display: flex;
     min-width: 0;
-    flex: 1 1 100%;
-    flex-direction: column;
+    -ms-flex: 1 1 100%;
+        flex: 1 1 100%;
+    -ms-flex-direction: column;
+        flex-direction: column;
   }
 }
 
@@ -610,13 +692,13 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 }
 
 .app-subnav__section-item {
+  margin-top: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   list-style: none;
 }
 
 .app-subnav__link {
-  display: block;
-  padding: 10px;
-  border-left: 4px solid transparent;
   color: #1d70b8;
   text-decoration: none;
 }
@@ -626,7 +708,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 }
 
 .app-subnav__link:hover {
-  border-color: #1d70b8;
+  text-decoration: underline;
 }
 
 .app-subnav__link:focus {
@@ -728,6 +810,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 }
 
 .app-back-to-top {
+  position: -webkit-sticky;
   position: sticky;
   top: 30px;
   margin-bottom: 30px;
@@ -955,7 +1038,8 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   min-width: 230px;
   min-height: 60px;
   overflow: auto;
-  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 
 @media (min-width: 48.0625em) {
@@ -1214,7 +1298,8 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 }
 
 pre {
-  margin: 30px 0;
+  margin: 0 0 30px;
+  font-size: 16px;
   word-wrap: break-word;
 }
 
@@ -1226,18 +1311,23 @@ pre {
   margin: 0;
 }
 
+pre,
 code {
-  font-family: monospace;
-  font-size: 19px;
+  font-family: monospace, monospace;
+  font-size: 16px;
+}
+
+code {
   line-height: 1.31579em;
 }
 
 p code,
-li code {
+li code, .dl-code {
   padding: 0 5px;
-  color: #dd1144;
+  color: #9f2815;
   background-color: #f8f8f8;
-  font-family: monospace;
+  font-family: monospace, monospace;
+  font-size: 100%;
 }
 
 p code,
@@ -1334,3 +1424,5 @@ li code {
   padding: 15px;
   border: 1px solid #b1b4b6;
 }
+
+/*# sourceMappingURL=styleguide.css.map */
