@@ -1,0 +1,13 @@
+{% extends "digital-land-frontend/dlf-base.html" %}
+
+{% block beforeContent %}
+    {%- from "govuk-jinja-components/components/phase-banner/macro.jinja" import govukPhaseBanner %}
+    {{ govukPhaseBanner({
+        "tag": {
+            "text": "Prototype",
+            "classes": "govuk-tag"
+        },
+        "html": 'This is a prototype. Please provide feedback to the Planning data team.'
+    }) }}
+    {% block dl_breadcrumbs %}{% endblock %}
+{% endblock %}
