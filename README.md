@@ -10,6 +10,7 @@ to the new application.
 
 The redirection is handled in the [application/factory.py](application/factory.py) file using a "before_request" decorator to intercept all requests.
 
+Automatic deploys of this code to Heroku has been disabled
 
 ## Check brownfield land data
 
