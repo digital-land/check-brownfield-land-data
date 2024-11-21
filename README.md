@@ -1,4 +1,16 @@
-# Check brownfield land data
+[!IMPORTANT]
+
+# Important - this application is deprecated
+
+This application has been replaced by [Submit and update your planning data](https://submit.planning.data.gov.uk/)
+
+The original application running in Heroku [Check your brownfield land data](https://brownfield-sites-validator.herokuapp.com/) redirects
+to the new application.
+
+The redirection is handled in the [application/factory.py](application/factory.py) file using a "before_request" decorator to intercept all requests.
+
+
+## Check brownfield land data
 
 ## Getting started
 

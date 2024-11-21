@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template
 from flask.cli import load_dotenv
 from jinja2 import PackageLoader, PrefixLoader, ChoiceLoader
 from .pipeline.brownfield_pipeline import pipeline
@@ -21,6 +21,12 @@ def create_app(config_filename):
     register_filters(app)
     register_templates(app)
     pipeline.init()
+    
+    @app.before_request
+    def global_redirect():
+        target_domain = "https://submit.planning.data.gov.uk"
+        return redirect(target_domain, code=301)
+
     return app
 
 
