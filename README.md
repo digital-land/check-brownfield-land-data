@@ -1,6 +1,7 @@
-[!IMPORTANT]
+> [!IMPORTANT]
+> This application is deprecated
 
-# Important - this application is deprecated
+# Application replacment
 
 This application has been replaced by [Submit and update your planning data](https://submit.planning.data.gov.uk/)
 
